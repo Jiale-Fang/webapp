@@ -1,7 +1,6 @@
-package pers.fjl.assignment01.utils;
+package pers.fjl.healthcheck.utils;
 
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 
 public class HttpUtils {
     public static HttpHeaders getResponseHeaders() {

@@ -1,4 +1,4 @@
-package pers.fjl.assignment01.handler;
+package pers.fjl.healthcheck.handler;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import pers.fjl.assignment01.utils.HttpUtils;
+import pers.fjl.healthcheck.utils.HttpUtils;
 
 @ControllerAdvice
 public class BaseExceptionHandler {

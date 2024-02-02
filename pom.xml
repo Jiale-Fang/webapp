@@ -51,7 +51,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>pers.fjl.assignment01.HealthCheckApplication</mainClass>
+                    <mainClass>pers.fjl.healthcheck.HealthCheckApplication</mainClass>
                 </configuration>
                 <executions>
                     <execution>

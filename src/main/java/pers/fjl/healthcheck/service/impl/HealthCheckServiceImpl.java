@@ -1,8 +1,8 @@
-package pers.fjl.assignment01.service.impl;
+package pers.fjl.healthcheck.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pers.fjl.assignment01.service.HealthCheckService;
+import pers.fjl.healthcheck.service.HealthCheckService;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.SQLException;

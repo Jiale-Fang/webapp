@@ -1,4 +1,4 @@
-package pers.fjl.assignment01.service;
+package pers.fjl.healthcheck.service;
 
 public interface HealthCheckService {
     boolean isDatabaseConnected();

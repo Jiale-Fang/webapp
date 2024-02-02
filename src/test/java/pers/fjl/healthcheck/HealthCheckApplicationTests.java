@@ -1,4 +1,4 @@
-package pers.fjl.assignment01;
+package pers.fjl.healthcheck;
 
 import org.jasypt.encryption.StringEncryptor;
 import org.junit.jupiter.api.Test;

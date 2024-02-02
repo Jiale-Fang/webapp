@@ -1,4 +1,4 @@
-package pers.fjl.assignment01.controller;
+package pers.fjl.healthcheck.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -8,8 +8,8 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import pers.fjl.assignment01.service.HealthCheckService;
-import pers.fjl.assignment01.utils.HttpUtils;
+import pers.fjl.healthcheck.service.HealthCheckService;
+import pers.fjl.healthcheck.utils.HttpUtils;
 
 @RestController
 public class HealthCheckController {

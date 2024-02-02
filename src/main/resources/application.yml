@@ -1,0 +1,12 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: health-check
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ENC(9GzA+3vFUDiCC29IDKr7tpymmtaZfCVULpn+owGnoT6/RjInhSRhberdJH/jOH1gCL5rUkx6fpHsHnDPLGJVGBgAcyPaT00qqwQ5MEgmG2lhU+p83n51HcMQucn9qAvSDDtJvyZLXcZVP6Rk/teh90g+w6uUQLtLzPMnWCx4OpTScxWLcpF9VaJmy+sNhfYComnUZIrfcOB381E0baVbMw==)
+    username: ENC(PT5SUMAJp/biou48k47Ln6zMp01yd65xJw8ysVbQNp8VxlUv0l6pfJJIWfrvqPZd)
+    password: ENC(r6TO1zMIgDOAfHyhtVAg+mRae6iDAozxMuK+isnptGoJUgeKs37zMB4hp4M2npvO)
+    hikari:
+      connection-timeout: 5000

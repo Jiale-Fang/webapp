@@ -5,8 +5,25 @@ spring:
     name: health-check
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ENC(9GzA+3vFUDiCC29IDKr7tpymmtaZfCVULpn+owGnoT6/RjInhSRhberdJH/jOH1gCL5rUkx6fpHsHnDPLGJVGBgAcyPaT00qqwQ5MEgmG2lhU+p83n51HcMQucn9qAvSDDtJvyZLXcZVP6Rk/teh90g+w6uUQLtLzPMnWCx4OpTScxWLcpF9VaJmy+sNhfYComnUZIrfcOB381E0baVbMw==)
+    url: ENC(6Yc1KABxrBaEcLy4YH3OdHf+PUZIKUWxQ6gJoLk0oT1YKwJLqMqn7y8/aC2pwQFKAE/RgNxTpsb+WekfaB14Rv5+rZ6scQd7VxF8DKbtIFviPAQ33YZ9p2t/07dRd4piEg1n9wVXp8BHPlUOmC6SfjoFDmpz5D4qn7b9FAP1Caa4cohZOtBXX0MAWOCHxbiKDGlAtwCbJt5b6NNQSZyz6IfojaKPCgs5PaEoVPvyayo=)
     username: ENC(PT5SUMAJp/biou48k47Ln6zMp01yd65xJw8ysVbQNp8VxlUv0l6pfJJIWfrvqPZd)
     password: ENC(r6TO1zMIgDOAfHyhtVAg+mRae6iDAozxMuK+isnptGoJUgeKs37zMB4hp4M2npvO)
     hikari:
       connection-timeout: 5000
+  jpa:
+    database: mysql
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+
+mybatis-plus:
+  global-config:
+        db-config:
+          table-prefix: tb_
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

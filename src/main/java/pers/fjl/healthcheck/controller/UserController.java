@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.fjl.healthcheck.dto.UserDTO;
@@ -33,7 +34,12 @@ public class UserController {
 
     // If current user can successfully pass the spring security authentication, we can get its info from SecurityContextHolder
     @GetMapping("/v1/user/self")
-    public ResponseEntity<Object> getUserInfo() {
+    public ResponseEntity<Object> getUserInfo(@RequestBody(required = false) String requestBody) {
+        // Check if the request body has parameters
+        if (StringUtils.hasText(requestBody)) {
+            return Result.fail(HttpStatus.BAD_REQUEST);
+        }
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         UserDTO userDTO = userService.getUserInfo(username);

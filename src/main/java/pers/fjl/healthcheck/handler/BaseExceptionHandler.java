@@ -5,6 +5,7 @@ import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -15,7 +16,7 @@ import pers.fjl.healthcheck.entity.Result;
 @ControllerAdvice
 public class BaseExceptionHandler {
 
-    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ExceptionHandler({HttpRequestMethodNotSupportedException.class, RequestRejectedException.class})
     public ResponseEntity<Object> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex) {
         return Result.fail(HttpStatus.METHOD_NOT_ALLOWED);
     }

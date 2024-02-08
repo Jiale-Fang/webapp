@@ -9,7 +9,7 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>pers.fjl</groupId>
-    <artifactId>Jiale_Fang_002749826_01</artifactId>
+    <artifactId>Health_Check</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Health_Check_App</name>
     <description>Health_Check_App</description>

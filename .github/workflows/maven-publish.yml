@@ -20,5 +20,14 @@ jobs:
           java-version: '8'
           distribution: 'temurin'
 
+      - uses: mirromutth/mysql-action@v1.1
+        with:
+          host port: 3306
+          mysql version: '8.0'
+          mysql root password: ${{ secrets.MysqlRootPassword }}
+
       - name: Compile with Maven
         run: mvn -B compile --file pom.xml -Djasypt.encryptor.password=${{ secrets.JasyptEncryptionKey }}
+
+      - name: Run Test Cases
+        run: mvn -B clean test -Djasypt.encryptor.password=${{ secrets.JasyptEncryptionKey }}

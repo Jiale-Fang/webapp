@@ -19,6 +19,8 @@
         <mybatis-plus-boot-starter>3.4.0</mybatis-plus-boot-starter>
         <lombok.version>1.18.28</lombok.version>
         <jasypt.version>3.0.5</jasypt.version>
+        <io-rest-assured.version>4.4.0</io-rest-assured.version>
+        <groovy.version>3.0.6</groovy.version>
     </properties>
     <dependencies>
         <dependency>
@@ -63,6 +65,28 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>${io-rest-assured.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <!--Added required depeendencies due to : https://github.com/rest-assured/rest-assured/issues/1168 -->
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured-common</artifactId>
+            <version>${io-rest-assured.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>json-path</artifactId>
+            <version>${io-rest-assured.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>xml-path</artifactId>
+            <version>${io-rest-assured.version}</version>
         </dependency>
     </dependencies>
     <build>

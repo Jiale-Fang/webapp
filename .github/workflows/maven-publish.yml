@@ -21,4 +21,4 @@ jobs:
           distribution: 'temurin'
 
       - name: Compile with Maven
-        run: mvn -B compile --file pom.xml -Djasypt.encryptor.password=${{ secrets.JasyptEncryptionKey }}
+        run: ech -B compile --file pom.xml -Djasypt.encryptor.password=${{ secrets.JasyptEncryptionKey }}

@@ -13,7 +13,9 @@ import pers.fjl.healthcheck.entity.Result;
 import pers.fjl.healthcheck.service.UserService;
 import pers.fjl.healthcheck.vo.UserAddVO;
 import pers.fjl.healthcheck.vo.UserUpdateVO;
+
 import javax.validation.Valid;
+import java.util.Objects;
 
 @Validated
 @RestController
@@ -24,9 +26,9 @@ public class UserController {
 
     @PostMapping("/v1/user")
     public ResponseEntity<Object> addUser(@Valid @RequestBody UserAddVO userAddVO) {
-        boolean flag = userService.addUser(userAddVO);
-        if (flag) {
-            return Result.ok(HttpStatus.CREATED);
+        UserDTO userDTO = userService.addUser(userAddVO);
+        if (!Objects.isNull(userDTO)) {
+            return Result.ok(HttpStatus.CREATED, userDTO);
         } else {
             return Result.fail(HttpStatus.BAD_REQUEST, "Username already exists");
         }

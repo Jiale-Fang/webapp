@@ -1,6 +1,5 @@
 package pers.fjl.healthcheck.entity;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -29,6 +28,10 @@ public class Result {
 
     public static ResponseEntity<Object> ok(Object data) {
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(data);
+    }
+
+    public static ResponseEntity<Object> ok(HttpStatus httpStatus, Object data) {
+        return ResponseEntity.status(httpStatus).headers(headers).body(data);
     }
 
     public static ResponseEntity<Object> fail(HttpStatus httpStatus) {

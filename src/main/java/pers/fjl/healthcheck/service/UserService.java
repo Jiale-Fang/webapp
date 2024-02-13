@@ -18,9 +18,9 @@ public interface UserService extends IService<User> {
     /**
      * Create user
      * @param userAddVO add user entity
-     * @return operation success flag
+     * @return userDTO
      */
-    boolean addUser(UserAddVO userAddVO);
+    UserDTO addUser(UserAddVO userAddVO);
 
     /**
      * Update user info
@@ -28,4 +28,10 @@ public interface UserService extends IService<User> {
      * @param userUpdateVO update user entity
      */
     void update(String username, UserUpdateVO userUpdateVO);
+
+    /**
+     * Delete user by username
+     * @param username username
+     */
+    void deleteUserIfExists(String username);
 }

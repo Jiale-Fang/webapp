@@ -2,7 +2,9 @@ package pers.fjl.healthcheck;
 
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import pers.fjl.healthcheck.service.UserService;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
@@ -10,8 +12,12 @@ import static org.hamcrest.Matchers.equalTo;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class HealthCheckApplicationTests {
 
+    @Autowired
+    private UserService userService;
+
     @Test
     public void testCreateAccount() {
+        userService.deleteUserIfExists("fjl@example.com");
         String requestBody = "{\"first_name\": \"Jiale\", \"last_name\": \"Fang\", \"username\": \"fjl@example.com\", \"password\": \"123456\"}";
 
         given()
@@ -20,7 +26,10 @@ class HealthCheckApplicationTests {
                 .when()
                 .post("/v1/user")
                 .then()
-                .statusCode(201);
+                .statusCode(201)
+                .body("first_name", equalTo("Jiale"))
+                .body("last_name", equalTo("Fang"))
+                .body("username", equalTo("fjl@example.com"));
 
         given()
                 .contentType(ContentType.JSON)

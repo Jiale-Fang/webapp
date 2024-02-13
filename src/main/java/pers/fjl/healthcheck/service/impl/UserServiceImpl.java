@@ -24,18 +24,26 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     private BCryptPasswordEncoder encoder;
 
     @Override
-    public boolean addUser(UserAddVO userAddVO) {
+    public UserDTO addUser(UserAddVO userAddVO) {
         boolean isUserExists = isUserExists(userAddVO.getUsername());
-        if(isUserExists){
-            return false;
+        if (isUserExists) {
+            return null;
         }
-
+        LocalDateTime localDateTime = LocalDateTime.now();
         User user = new User();
         BeanUtils.copyProperties(userAddVO, user);
         user.setId(UUID.randomUUID().toString());
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setAccountCreated(LocalDateTime.now());
-        return userDao.insert(user) > 0;
+        user.setAccountCreated(localDateTime);
+        user.setAccountUpdated(localDateTime);
+
+        if (userDao.insert(user) > 0) {   // successfully insert
+            UserDTO userDTO = new UserDTO();
+            BeanUtils.copyProperties(user, userDTO);
+            return userDTO;
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -66,6 +74,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
         wrapper.eq(User::getUsername, username);
         return userDao.selectCount(wrapper) != 0;
+    }
+
+    public void deleteUserIfExists(String username){
+        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(User::getUsername, username);
+        userDao.delete(wrapper);
     }
 
 }

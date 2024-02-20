@@ -28,5 +28,14 @@ jobs:
       - name: Compile with Maven
         run: mvn -B compile --file pom.xml -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
 
-      - name: Run Test Cases
-        run: mvn -B clean test -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
+      - name: Install package
+        run: mvn clean install -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: webapp artifact
+          path: ./target/Health_Check-0.0.1-SNAPSHOT.jar
+
+      - name: Display structure of downloaded files
+        run: ls -R

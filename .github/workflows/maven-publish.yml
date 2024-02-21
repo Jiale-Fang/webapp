@@ -28,5 +28,5 @@ jobs:
       - name: Compile with Maven
         run: mvn -B compile --file pom.xml -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
 
-      - name: Install package
+      - name: Run test cases
         run: mvn clean test -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}

@@ -15,10 +15,17 @@ variable "zone" {
 variable "project_id" {
   description = "Google project id"
   type    = string
+  sensitive   = true
 }
 
 variable "mysql_password" {
   description = "Mysql password"
+  type        = string
+  sensitive   = true
+}
+
+variable "jasypt_encryption_key" {
+  description = "Jasypt encryption key, used for decrypting sensitive app configuration parameters"
   type        = string
   sensitive   = true
 }
@@ -66,6 +73,9 @@ build {
     script       = "./scripts/configure_systemd.sh"
     pause_before = "3s"
     timeout      = "30s"
+    environment_vars = [
+      "JASYPT_ENCRYPTION_KEY=${var.jasypt_encryption_key}",
+    ]
   }
 
 }

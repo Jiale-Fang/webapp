@@ -13,7 +13,7 @@ Type=simple
 User=csye6225
 Group=csye6225
 WorkingDirectory=/usr/local/csye6225_repo
-ExecStart=java -Djasypt.encryptor.password="kllxdwh" -jar /usr/local/csye6225_repo/Health_Check-0.0.1-SNAPSHOT.jar
+ExecStart=java -Djasypt.encryptor.password=${JASYPT_ENCRYPTION_KEY} -jar /usr/local/csye6225_repo/Health_Check-0.0.1-SNAPSHOT.jar
 Restart=always
 RestartSec=3
 StandardOutput=syslog

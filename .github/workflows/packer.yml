@@ -3,6 +3,7 @@ name: Build machine image
 
 on:
   pull_request:
+    types: [closed]
     branches:
       - main
 
@@ -55,11 +56,13 @@ jobs:
         id: validate
         run: |
           packer validate -var 'mysql_password='${{ secrets.MYSQL_ROOT_PASSWORD }} \
-          -var 'project_id='${{ secrets.GCP_PROJECT_ID }}
+          -var 'project_id='${{ secrets.GCP_PROJECT_ID }} \
+          -var 'jasypt_encryption_key='${{ secrets.JASYPT_ENCRYPTION_KEY }} \
           -var 'zone='${{ secrets.GCP_ZONE }} ./gcp-centos8.pkr.hcl
 
       - name: Build Image
         run: | 
           packer build -on-error=abort -var 'MYSQL_PASSWORD='${{ secrets.MYSQL_ROOT_PASSWORD }} \
-          -var 'project_id='${{ secrets.GCP_PROJECT_ID }}
+          -var 'project_id='${{ secrets.GCP_PROJECT_ID }} \
+          -var 'jasypt_encryption_key='${{ secrets.JASYPT_ENCRYPTION_KEY }} \
           -var 'zone='${{ secrets.GCP_ZONE }} ./gcp-centos8.pkr.hcl

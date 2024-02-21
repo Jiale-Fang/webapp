@@ -7,24 +7,29 @@ packer {
   }
 }
 
-variable "GCP_ACCOUNT_JSON" {
-  type      = string
-  sensitive = true
+variable "zone" {
+  description = "Az"
+  type    = string
 }
 
-variable "MYSQL_PASSWORD" {
-  type      = string
-  sensitive = true
+variable "project_id" {
+  description = "Google project id"
+  type    = string
+}
+
+variable "mysql_password" {
+  description = "Mysql password"
+  type        = string
+  sensitive   = true
 }
 
 source "googlecompute" "customized-img" {
-  project_id          = "csye-6225-413815"
+  project_id          = var.project_id
   source_image_family = "centos-stream-8"
-  zone                = "us-east1-b"
-  ssh_username        = "csye6225"
+  zone                = var.zone
+  ssh_username        = "centos"
   machine_type        = "n1-standard-1"
   disk_size           = 100
-  credentials_json    = "var.GCP_ACCOUNT_JSON"
 }
 
 build {
@@ -48,7 +53,7 @@ build {
     pause_before = "3s"
     timeout      = "10s"
     environment_vars = [
-      "MYSQL_PASSWORD = var.MYSQL_PASSWORD"
+      "PASSWORD=${var.mysql_password}",
     ]
   }
 

@@ -25,6 +25,9 @@ jobs:
           mysql-version: "8.0"
           root-password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
+      - name: Run integration tests
+        run: mvn -B clean test -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
+
       - name: Install Package
         run: mvn -B clean install -DskipTests -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
 

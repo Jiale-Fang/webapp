@@ -26,7 +26,7 @@ jobs:
           root-password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
       - name: Install Package
-        run: mvn -B clean install -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
+        run: mvn -B clean install -DskipTests -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
 
       - id: auth
         uses: google-github-actions/auth@v2

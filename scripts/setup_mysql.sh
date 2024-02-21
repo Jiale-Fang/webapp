@@ -1,6 +1,5 @@
 #! /usr/bin/expect
 
-set MYSQL_PASSWORD [lindex $argv 0]
 # Secure Setting
 spawn sudo mysql_secure_installation
 expect {
@@ -16,12 +15,12 @@ expect {
   }
   "New password:"
   {
-    send "$MYSQL_PASSWORD\r"
+    send "$env(PASSWORD)\r"
     exp_continue
   }
   "Re-enter new password:"
   {
-    send "$MYSQL_PASSWORD\r"
+    send "$env(PASSWORD)\r"
     exp_continue
   }
   "Do you wish to continue with the password provided?(Press y|Y for Yes, any other key for No) :"
@@ -56,13 +55,13 @@ spawn mysql -uroot -p
 expect {
   "Enter password:"
   {
-    send "$MYSQL_PASSWORD\r"
+    send "$env(PASSWORD)\r"
     exp_continue
   }
   "mysql>"
   {
     send "Set global validate_password.policy=LOW;\r"
-    send "CREATE USER 'user'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';\r"
+    send "CREATE USER 'user'@'localhost' IDENTIFIED BY '$env(PASSWORD)';\r"
     send "GRANT ALL PRIVILEGES ON `health\_check`.* TO 'user'@'localhost';\r"
     send "flush privileges;\r"
     send "exit;\r"

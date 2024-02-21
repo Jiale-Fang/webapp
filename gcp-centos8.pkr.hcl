@@ -9,12 +9,12 @@ packer {
 
 variable "zone" {
   description = "Az"
-  type    = string
+  type        = string
 }
 
 variable "project_id" {
   description = "Google project id"
-  type    = string
+  type        = string
   sensitive   = true
 }
 

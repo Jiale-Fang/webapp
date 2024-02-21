@@ -65,7 +65,7 @@ jobs:
 
       - name: Build Image
         run: | 
-          packer build -on-error=abort -var 'MYSQL_PASSWORD='${{ secrets.MYSQL_ROOT_PASSWORD }} \
+          packer build -on-error=abort -var 'mysql_password='${{ secrets.MYSQL_ROOT_PASSWORD }} \
           -var 'project_id='${{ secrets.GCP_PROJECT_ID }} \
           -var 'jasypt_encryption_key='${{ secrets.JASYPT_ENCRYPTION_KEY }} \
           -var 'zone='${{ secrets.GCP_ZONE }} ./gcp-centos8.pkr.hcl

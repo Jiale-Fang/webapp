@@ -8,6 +8,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import pers.fjl.healthcheck.service.UserService;
 
+import javax.annotation.PostConstruct;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -18,8 +22,22 @@ class HealthCheckApplicationTests {
     @Autowired
     private UserService userService;
 
+    private final CountDownLatch latch = new CountDownLatch(1);
+
+    @PostConstruct
+    public void init() {
+        try {
+            TimeUnit.SECONDS.sleep(10);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        latch.countDown();
+    }
+
     @Test
-    public void testCreateAccount() {
+    public void testCreateAccount() throws InterruptedException {
+        latch.await();
+
         userService.deleteUserIfExists("fjl@example.com");
         String requestBody = "{\"first_name\": \"Jiale\", \"last_name\": \"Fang\", \"username\": \"fjl@example.com\", \"password\": \"123456\"}";
 

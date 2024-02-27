@@ -9,7 +9,7 @@ packer {
 
 variable "zone" {
   description = "Az"
-  type        = string
+  type             = string
 }
 
 variable "project_id" {

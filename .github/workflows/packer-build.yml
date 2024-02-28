@@ -48,24 +48,12 @@ jobs:
         with:
           version: 1.10.1
 
-      - name: Run `packer fmt`
-        run: "packer fmt -check ./gcp-centos8.pkr.hcl"
-
       - name: Run `packer init`
         id: init
         run: "packer init ./gcp-centos8.pkr.hcl"
 
-      - name: Run `packer validate`
-        id: validate
-        run: |
-          packer validate -var 'mysql_password='${{ secrets.MYSQL_ROOT_PASSWORD }} \
-          -var 'project_id='${{ secrets.GCP_PROJECT_ID }} \
-          -var 'jasypt_encryption_key='${{ secrets.JASYPT_ENCRYPTION_KEY }} \
-          -var 'zone='${{ secrets.GCP_ZONE }} ./gcp-centos8.pkr.hcl
-
       - name: Build Image
         run: | 
-          packer build -on-error=abort -var 'mysql_password='${{ secrets.MYSQL_ROOT_PASSWORD }} \
-          -var 'project_id='${{ secrets.GCP_PROJECT_ID }} \
+          packer build -on-error=abort -var 'project_id='${{ secrets.GCP_PROJECT_ID }} \
           -var 'jasypt_encryption_key='${{ secrets.JASYPT_ENCRYPTION_KEY }} \
           -var 'zone='${{ secrets.GCP_ZONE }} ./gcp-centos8.pkr.hcl

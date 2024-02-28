@@ -45,7 +45,7 @@ build {
 
   provisioner "file" {
     source      = "./target/Health_Check-0.0.1-SNAPSHOT.jar"
-    destination = "/usr/local/csye6225_repo/Health_Check-0.0.1-SNAPSHOT.jar"
+    destination = "/opt/csye6225_repo/Health_Check-0.0.1-SNAPSHOT.jar"
   }
 
   provisioner "shell" {

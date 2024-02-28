@@ -25,6 +25,11 @@ jobs:
         id: init
         run: "packer init ./gcp-centos8.pkr.hcl"
 
+      - name: Create JAR file
+        run: |
+          # Create a empty jar for packer to pass the test
+          echo "" > ./target/Health_Check-0.0.1-SNAPSHOT.jar
+
       - name: Run `packer validate`
         id: validate
         run: |

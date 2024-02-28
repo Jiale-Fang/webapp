@@ -9,5 +9,5 @@ echo "Install Maven"
 echo "y" |  sudo dnf install maven
 
 # Create Working folder
-sudo mkdir /usr/local/csye6225_repo
-sudo chown -R $(whoami):$(whoami) /usr/local/csye6225_repo
+sudo mkdir /opt/csye6225_repo
+sudo chown -R $(whoami):$(whoami) /opt/csye6225_repo

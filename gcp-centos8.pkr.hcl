@@ -18,12 +18,6 @@ variable "project_id" {
   sensitive   = true
 }
 
-variable "mysql_password" {
-  description = "Mysql password"
-  type        = string
-  sensitive   = true
-}
-
 variable "jasypt_encryption_key" {
   description = "Jasypt encryption key, used for decrypting sensitive app configuration parameters"
   type        = string
@@ -47,21 +41,6 @@ build {
     script       = "./scripts/install_dependencies.sh"
     pause_before = "3s"
     timeout      = "120s"
-  }
-
-  provisioner "shell" {
-    script       = "./scripts/install_mysql.sh"
-    pause_before = "3s"
-    timeout      = "180s"
-  }
-
-  provisioner "shell" {
-    script       = "./scripts/setup_mysql.sh"
-    pause_before = "3s"
-    timeout      = "10s"
-    environment_vars = [
-      "PASSWORD=${var.mysql_password}",
-    ]
   }
 
   provisioner "file" {

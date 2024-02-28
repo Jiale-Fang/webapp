@@ -28,6 +28,7 @@ jobs:
       - name: Create JAR file
         run: |
           # Create a empty jar for packer to pass the test
+          mkdir -p ./target
           echo "" > ./target/Health_Check-0.0.1-SNAPSHOT.jar
 
       - name: Run `packer validate`

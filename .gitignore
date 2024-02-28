@@ -40,3 +40,5 @@ crash.log
 *.box
 
 *.pem
+
+.DS_Store

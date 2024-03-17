@@ -2,6 +2,8 @@ package pers.fjl.healthcheck.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,11 +24,13 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
     private UserDao userDao;
     @Autowired
     private BCryptPasswordEncoder encoder;
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public UserDTO addUser(UserAddVO userAddVO) {
         boolean isUserExists = isUserExists(userAddVO.getUsername());
         if (isUserExists) {
+            logger.error("User addition failed: Username {} already exists.", userAddVO.getUsername());
             return null;
         }
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -38,10 +42,12 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         user.setAccountUpdated(localDateTime);
 
         if (userDao.insert(user) > 0) {   // successfully insert
+            logger.info("User {} added successfully", user.getUsername());
             UserDTO userDTO = new UserDTO();
             BeanUtils.copyProperties(user, userDTO);
             return userDTO;
         } else {
+            logger.error("Failed to insert user {}", userAddVO.getUsername());
             return null;
         }
     }
@@ -56,6 +62,7 @@ public class UserServiceImpl extends ServiceImpl<UserDao, User> implements UserS
         userDB.setPassword(encoder.encode(userUpdateVO.getPassword()));
         userDB.setAccountUpdated(LocalDateTime.now());
         userDao.updateById(userDB);
+        logger.info("User {} updated successfully", username);
     }
 
     @Override

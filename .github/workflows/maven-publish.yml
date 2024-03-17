@@ -29,4 +29,4 @@ jobs:
         run: mvn -B compile --file pom.xml -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
 
       - name: Run test cases
-        run: mvn -B clean test -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
+        run: mvn -B clean test -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }} -Dlogback.log.path="."

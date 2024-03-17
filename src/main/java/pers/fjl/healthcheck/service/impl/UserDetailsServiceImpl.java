@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         if (ObjectUtils.isEmpty(user)) {
-            logger.error("User addition failed: Username {} already exists", username);
+            logger.warn("User verification failed: Can't found a corresponding user: {}", username);
             throw new UsernameNotFoundException("Can't found a corresponding user");
         }
 

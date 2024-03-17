@@ -22,6 +22,7 @@ public class MethodFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         if (request.getMethod().equals("OPTIONS") || request.getMethod().equals("HEAD")) {
+            logger.error("Illegal http method");
             response.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         } else {
             filterChain.doFilter(request, response);

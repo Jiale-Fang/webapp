@@ -28,13 +28,13 @@ public class BaseExceptionHandler {
 
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class, RequestRejectedException.class})
     public ResponseEntity<Object> handleMethodNotAllowed(HttpRequestMethodNotSupportedException ex) {
-        logger.warn("Illegal http method", ex);
+        logger.error("Illegal http method", ex);
         return Result.fail(HttpStatus.METHOD_NOT_ALLOWED);
     }
 
     @ExceptionHandler(value = {MethodArgumentNotValidException.class})
     public ResponseEntity<Object> validHandle(MethodArgumentNotValidException ex) {
-        logger.warn("Illegal argument", ex);
+        logger.error("Illegal argument", ex);
         FieldError fieldError = ex.getBindingResult().getFieldError();
         if (fieldError != null) {
             return Result.fail(HttpStatus.BAD_REQUEST, fieldError.getDefaultMessage());
@@ -45,7 +45,7 @@ public class BaseExceptionHandler {
 
     @ExceptionHandler(value = {HttpMessageNotReadableException.class})
     public ResponseEntity<Object> handleUnknownParams(HttpMessageNotReadableException ex) {
-        logger.warn("Contains unknown params", ex);
+        logger.error("Contains unknown params", ex);
         return Result.fail(HttpStatus.BAD_REQUEST, "Request parameters are invalid");
     }
 

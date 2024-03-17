@@ -11,3 +11,6 @@ echo "y" |  sudo dnf install maven
 # Create Working folder
 sudo mkdir /opt/csye6225_repo
 sudo chown -R $(whoami):$(whoami) /opt/csye6225_repo
+
+# Add no login user
+sudo useradd -s /usr/sbin/nologin csye6225

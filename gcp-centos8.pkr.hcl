@@ -43,6 +43,12 @@ build {
     timeout      = "120s"
   }
 
+  provisioner "shell" {
+    script       = "./scripts/install_ops_agent.sh"
+    pause_before = "3s"
+    timeout      = "120s"
+  }
+
   provisioner "file" {
     source      = "./target/Health_Check-0.0.1-SNAPSHOT.jar"
     destination = "/opt/csye6225_repo/Health_Check-0.0.1-SNAPSHOT.jar"
@@ -50,7 +56,7 @@ build {
 
   provisioner "shell" {
     script       = "./scripts/configure_systemd.sh"
-    pause_before = "3s"
+    pause_before = "10s"
     timeout      = "30s"
     environment_vars = [
       "JASYPT_ENCRYPTION_KEY=${var.jasypt_encryption_key}",

@@ -1,6 +1,5 @@
 #!/bin/bash
 
-sudo useradd -s /usr/sbin/nologin csye6225
 sudo chown -R csye6225:csye6225 /opt/csye6225_repo
 cat << EOF | sudo tee /etc/systemd/system/csye6225.service >/dev/null
 [Unit]

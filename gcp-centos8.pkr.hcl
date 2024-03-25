@@ -40,7 +40,7 @@ build {
   provisioner "shell" {
     script       = "./scripts/install_dependencies.sh"
     pause_before = "3s"
-    timeout      = "120s"
+    timeout      = "240s"
   }
 
   provisioner "shell" {

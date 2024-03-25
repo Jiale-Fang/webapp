@@ -1,6 +1,8 @@
 server:
   port: 8080
 spring:
+  profiles:
+    active: prod
   application:
     name: health-check
   datasource:
@@ -19,6 +21,11 @@ spring:
     property-naming-strategy: SNAKE_CASE
     deserialization:
       fail-on-unknown-properties: true
+  cloud:
+    gcp:
+      project-id: csye-6225-413815
+  redis:
+    host: 127.0.0.1
 
 mybatis-plus:
   global-config:
@@ -28,3 +35,6 @@ mybatis-plus:
     map-underscore-to-camel-case: true
     cache-enabled: false
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+pubsub:
+  email-topic: verify_email

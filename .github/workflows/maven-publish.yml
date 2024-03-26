@@ -25,6 +25,17 @@ jobs:
           mysql-version: "8.0"
           root-password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
+      - id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_ACCOUNT_JSON }}
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Use gcloud CLI
+        run: gcloud info
+
       - name: Compile with Maven
         run: mvn -B compile --file pom.xml -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }}
 

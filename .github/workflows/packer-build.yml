@@ -25,12 +25,6 @@ jobs:
           mysql-version: "8.0"
           root-password: ${{ secrets.MYSQL_ROOT_PASSWORD }}
 
-      - name: Run integration tests
-        run: mvn -B clean test -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }} -Dlogback.log.path="."
-
-      - name: Install Package
-        run: mvn -B clean install -DskipTests -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }} -Dlogback.log.path="/var/log"
-
       - id: auth
         uses: google-github-actions/auth@v2
         with:
@@ -41,6 +35,12 @@ jobs:
 
       - name: Use gcloud CLI
         run: gcloud info
+
+      - name: Run integration tests
+        run: mvn -B clean test -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }} -Dlogback.log.path="."
+
+      - name: Install Package
+        run: mvn -B clean install -DskipTests -Djasypt.encryptor.password=${{ secrets.JASYPT_ENCRYPTION_KEY }} -Dlogback.log.path="/var/log"
 
       - name: Setup Packer
         uses: hashicorp/setup-packer@main

@@ -1,11 +1,14 @@
 package pers.fjl.healthcheck;
 
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import pers.fjl.healthcheck.dao.UserDao;
+import pers.fjl.healthcheck.po.User;
 import pers.fjl.healthcheck.service.UserService;
 
 import javax.annotation.PostConstruct;
@@ -21,6 +24,8 @@ class HealthCheckApplicationTests {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserDao userDao;
 
     private final CountDownLatch latch = new CountDownLatch(1);
 
@@ -51,6 +56,11 @@ class HealthCheckApplicationTests {
                 .body("first_name", equalTo("Jiale"))
                 .body("last_name", equalTo("Fang"))
                 .body("username", equalTo("fjl@example.com"));
+
+        // Activate account
+        userDao.update(new User(), new LambdaUpdateWrapper<User>()
+                .set(User::isEmailVerified, true)
+                .eq(User::getUsername, "fjl@example.com"));
 
         given()
                 .contentType(ContentType.JSON)

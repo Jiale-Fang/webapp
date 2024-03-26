@@ -34,4 +34,12 @@ public interface UserService extends IService<User> {
      * @param username username
      */
     void deleteUserIfExists(String username);
+
+    /**
+     * Verify user's email base on token
+     * @param token unique token
+     * @param username email
+     * @return User is successfully verified or not
+     */
+    boolean verifyEmail(String token, String username);
 }

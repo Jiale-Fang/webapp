@@ -1,13 +1,20 @@
 package pers.fjl.healthcheck.po;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tb_user")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -31,4 +38,6 @@ public class User {
     @Column
     private LocalDateTime accountUpdated;
 
+    @Column(nullable = false)
+    private boolean emailVerified;
 }

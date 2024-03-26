@@ -5,6 +5,7 @@ import org.apache.ibatis.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -33,6 +34,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (ObjectUtils.isEmpty(user)) {
             logger.warn("User verification failed: Can't found a corresponding user: {}", username);
             throw new UsernameNotFoundException("Can't found a corresponding user");
+        }
+
+        if (!user.isEmailVerified()) {
+            throw new DisabledException("User has not verified email");
         }
 
         return org.springframework.security.core.userdetails.User.builder()

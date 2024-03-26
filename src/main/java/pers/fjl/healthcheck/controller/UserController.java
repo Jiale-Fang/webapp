@@ -49,11 +49,21 @@ public class UserController {
     }
 
     @PutMapping("/v1/user/self")
-    public ResponseEntity<String> updateUserInfo(@Valid @RequestBody UserUpdateVO userUpdateVO) {
+    public ResponseEntity<Object> updateUserInfo(@Valid @RequestBody UserUpdateVO userUpdateVO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         userService.update(username, userUpdateVO);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @GetMapping("/verify-email")
+    public ResponseEntity<Object> verifyEmail(@RequestParam("token") String token, @RequestParam("username") String username) {
+        boolean isVerified = userService.verifyEmail(token, username);
+        if (isVerified){
+            return Result.ok("Successfully verified user:" + username);
+        }else{
+            return Result.fail(HttpStatus.GONE, "The verification link is expired or incorrect");
+        }
     }
 
 }

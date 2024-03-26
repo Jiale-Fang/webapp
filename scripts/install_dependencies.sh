@@ -17,9 +17,3 @@ sudo useradd -s /usr/sbin/nologin csye6225
 
 # Install Mysql Client (Not server)
 echo "y" | sudo yum install -y mysql
-
-# Install Redis
-echo "y" | sudo yum install epel-release
-sudo yum install redis -y
-sudo systemctl start redis.service
-sudo systemctl enable redis

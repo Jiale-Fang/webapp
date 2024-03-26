@@ -21,6 +21,7 @@
         <jasypt.version>3.0.5</jasypt.version>
         <io-rest-assured.version>4.4.0</io-rest-assured.version>
         <groovy.version>3.0.6</groovy.version>
+        <spring-cloud-gcp.version>3.4.2</spring-cloud-gcp.version>
     </properties>
     <dependencies>
         <dependency>
@@ -111,6 +112,19 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
+        </dependency>
+        <!-- pub/sub -->
+        <dependency>
+            <groupId>com.google.cloud</groupId>
+            <artifactId>spring-cloud-gcp-dependencies</artifactId>
+            <version>${spring-cloud-gcp.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
+            <version>1.2.7.RELEASE</version>
         </dependency>
     </dependencies>
     <build>

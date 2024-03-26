@@ -24,8 +24,6 @@ spring:
   cloud:
     gcp:
       project-id: csye-6225-413815
-  redis:
-    host: 127.0.0.1
 
 mybatis-plus:
   global-config:

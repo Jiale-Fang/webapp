@@ -37,6 +37,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         if (!user.isEmailVerified()) {
+            logger.error("Unauthorized, user {} has not verified email", username);
             throw new DisabledException("User has not verified email");
         }
 

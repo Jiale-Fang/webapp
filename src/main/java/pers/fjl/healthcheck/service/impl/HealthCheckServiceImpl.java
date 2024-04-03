@@ -20,7 +20,6 @@ public class HealthCheckServiceImpl implements HealthCheckService {
     public boolean isDatabaseConnected() {
         // Try to connect to database
         try (Connection connection = dataSource.getConnection()) {
-            logger.error("DB connection is working");
             return true;
         } catch (SQLException e) {
             logger.error("Unable to connect to the database", e);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -39,6 +40,9 @@ public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
                 if (exception.getCause() instanceof PersistenceException) {
                     response.setStatus(HttpStatus.SERVICE_UNAVAILABLE.value());
                     data.put("error", "Service Unavailable");
+                } else if (exception.getCause() instanceof DisabledException) {
+                    data.put("error", "Forbidden");
+                    response.setStatus(HttpStatus.FORBIDDEN.value());
                 }
             }
         }

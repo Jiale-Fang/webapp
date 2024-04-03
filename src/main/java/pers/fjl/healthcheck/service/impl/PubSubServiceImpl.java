@@ -37,7 +37,7 @@ public class PubSubServiceImpl implements PubSubService {
     public void sendVerificationLink(User user) {
         // Generate verification link
         String token = UUID.randomUUID().toString();
-        String verificationLink = "http://" + hostname + ":8080/verify-email?username=" + user.getUsername() + "&token=" + token;
+        String verificationLink = "https://" + hostname + "/verify-email?username=" + user.getUsername() + "&token=" + token;
         String content = "<html><body style='font-family: Arial, sans-serif;'>" +
                 "<p style='font-size: 16px;'>Hi " + user.getFirstName() + ",</p>" +
                 "<p>Please click <a href='" + verificationLink + "' style='color: #3498db;'>this link</a> within 2 minutes to activate your account. If you cannot click the link, please copy and paste the following URL into your browser:</p>" +

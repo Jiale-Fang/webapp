@@ -10,6 +10,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import pers.fjl.healthcheck.handler.AuthenticationEntryPointImpl;
+import pers.fjl.healthcheck.handler.MyAuthenticationProvider;
 import pers.fjl.healthcheck.service.impl.UserDetailsServiceImpl;
 
 @Configuration
@@ -41,9 +42,17 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
+        auth.authenticationProvider(myAuthenticationProvider())
                 .userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public MyAuthenticationProvider myAuthenticationProvider() {
+        MyAuthenticationProvider myAuthenticationProvider = new MyAuthenticationProvider();
+        myAuthenticationProvider.setUserDetailsService(userDetailsService);
+        myAuthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return myAuthenticationProvider;
     }
 
     @Bean

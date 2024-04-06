@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import org.apache.ibatis.exceptions.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import pers.fjl.healthcheck.dao.UserDao;
 import pers.fjl.healthcheck.po.User;
+import pers.fjl.healthcheck.po.UserDetailDTO;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -36,16 +37,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new UsernameNotFoundException("Can't found a corresponding user");
         }
 
-        if (!user.isEmailVerified()) {
-            logger.error("Forbidden, user {} has not verified email", username);
-            throw new DisabledException("User has not verified email");
-        }
+        UserDetailDTO userDetailDTO = new UserDetailDTO();
+        BeanUtils.copyProperties(user, userDetailDTO);
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getUsername())
-                .password(user.getPassword())
-                .roles("USER")
-                .build();
+        return userDetailDTO;
     }
 
 }

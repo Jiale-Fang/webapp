@@ -75,6 +75,7 @@ jobs:
           echo "instance-template-$TEMPLATE_ID"
           gcloud compute instance-templates create "instance-template-${{ github.run_id }}-${{ github.run_attempt }}" \
             --region=${{ secrets.GCP_REGION }} \
+            --instance-template-region=${{ secrets.GCP_REGION }} \
             --machine-type=${{ vars.MACHINE_TYPE }} \
             --tags="webapp-${{ vars.RANDOM_SUFFIX }}",allow-health-check \
             --create-disk=auto-delete=true,size=${{ vars.DISK_SIZE }},type=${{ vars.DISK_TYPE }},image=${IMAGE_ID},boot=${{ vars.IS_BOOT }},kms-key=${{ secrets.KMS_KEY }} \

@@ -73,9 +73,10 @@ jobs:
         run: |
           echo "TEMPLATE_ID=${{ github.run_id }}-${{ github.run_attempt }}" >> $GITHUB_ENV
           gcloud compute instance-templates create instance-template-"$TEMPLATE-ID" \
+            --region=${{ secrets.GCP_REGION }} \
             --machine-type=${{ vars.MACHINE_TYPE }} \
             --tags="webapp-${{ vars.RANDOM_SUFFIX }}",allow-health-check \
-            --create-disk=auto-delete=true,size=${{ vars.DISK_SIZE }},type=${{ vars.DISK_TYPE }},image=${{ vars.IMAGE_ID }},boot=${{ vars.IS_BOOT }},kms-key=${{ vars.KMS_KEY }} \
+            --create-disk=auto-delete=true,size=${{ vars.DISK_SIZE }},type=${{ vars.DISK_TYPE }},image=${IMAGE_ID},boot=${{ vars.IS_BOOT }},kms-key=${{ vars.KMS_KEY }} \
             --network-interface=network="vpc-network-${{ vars.RANDOM_SUFFIX }}",subnet="webapp-subnet-${{ vars.RANDOM_SUFFIX }}" \
             --metadata-from-file=startup-script=./startup-script.sh \
             --service-account=${{ secrets.VM_SERVICE_ACCOUNT }} \

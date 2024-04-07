@@ -56,4 +56,49 @@ jobs:
         run: | 
           packer build -on-error=abort -var 'project_id='${{ secrets.GCP_PROJECT_ID }} \
           -var 'jasypt_encryption_key='${{ secrets.JASYPT_ENCRYPTION_KEY }} \
-          -var 'zone='${{ secrets.GCP_ZONE }} ./gcp-centos8.pkr.hcl
+          -var 'zone='${{ secrets.GCP_ZONE }} ./gcp-centos8.pkr.hcl | tee packer_output.txt
+          
+      - name: Extract Image ID
+        id: extract_image_id
+        run: |
+          IMAGE_ID=$(tail -2 packer_output.txt | awk 'match($0, /packer-.*/) { print substr($0, RSTART, RLENGTH) }')
+          echo "IMAGE_ID=${IMAGE_ID}" >> $GITHUB_ENV
+
+      - name: Create Startup Scripts
+        run: |
+          echo "${{ secrets.STARTUP_SCRIPT }}" > startup-script.sh
+
+      # New Steps for Creating and Updating Instance Template
+      - name: Create New Instance Template Version
+        run: |
+          echo "TEMPLATE_ID=${{ github.run_id }}-${{ github.run_attempt }}" >> $GITHUB_ENV
+          gcloud compute instance-templates create instance-template-"$TEMPLATE-ID" \
+            --machine-type=${{ vars.MACHINE_TYPE }} \
+            --tags="webapp-${{ vars.RANDOM_SUFFIX }}",allow-health-check \
+            --create-disk=auto-delete=true,size=${{ vars.DISK_SIZE }},type=${{ vars.DISK_TYPE }},image=${{ vars.IMAGE_ID }},boot=${{ vars.IS_BOOT }},kms-key=${{ vars.KMS_KEY }} \
+            --network-interface=network="vpc-network-${{ vars.RANDOM_SUFFIX }}",subnet="webapp-subnet-${{ vars.RANDOM_SUFFIX }}" \
+            --metadata-from-file=startup-script=./startup-script.sh \
+            --service-account=${{ secrets.VM_SERVICE_ACCOUNT }} \
+            --scopes=cloud-platform
+
+      - name: Configure Managed Instance Group
+        run: |
+          gcloud compute instance-groups managed set-instance-template instance-group-manager \
+            --template=instance-template-"$TEMPLATE-ID" --region=${{ secrets.GCP_REGION }}
+
+      - name: Recreate Instances in Managed Instance Group
+        run: |
+          gcloud compute instance-groups managed rolling-action replace instance-group-manager \
+          --region=${{ secrets.GCP_REGION }}
+          while :; do
+            STATUS=$(gcloud compute instance-groups managed describe instance-group-manager \
+              --region=us-east1 --format="get(status.isStable)")
+            echo "Current status isStable: $STATUS"
+            if [ "$STATUS" = "True" ]; then
+              echo "Instance Group Manager is stable."
+              break
+            else
+              echo "Waiting for Instance Group Manager to become stable..."
+              sleep 10
+            fi
+          done

@@ -66,20 +66,18 @@ jobs:
 
       - name: Create Startup Scripts
         run: |
-          echo "${{ secrets.STARTUP_SCRIPT }}" > startup-script.sh
+          echo "${{ secrets.STARTUP_SCRIPT }}" | base64 -d > startup-script.sh
 
       # New Steps for Creating and Updating Instance Template
       - name: Create New Instance Template Version
         run: |
-          echo "TEMPLATE_ID=${{ github.run_id }}-${{ github.run_attempt }}" >> $GITHUB_ENV
-          echo "instance-template-$TEMPLATE_ID"
           gcloud compute instance-templates create "instance-template-${{ github.run_id }}-${{ github.run_attempt }}" \
             --region=${{ secrets.GCP_REGION }} \
             --instance-template-region=${{ secrets.GCP_REGION }} \
             --machine-type=${{ vars.MACHINE_TYPE }} \
             --tags="webapp-${{ vars.RANDOM_SUFFIX }}",allow-health-check \
-            --create-disk=auto-delete=true,size=${{ vars.DISK_SIZE }},type=${{ vars.DISK_TYPE }},image=${IMAGE_ID},boot=${{ vars.IS_BOOT }},kms-key=${{ secrets.KMS_KEY }} \
-            --network-interface=network="vpc-network-${{ vars.RANDOM_SUFFIX }}",subnet="webapp-subnet-${{ vars.RANDOM_SUFFIX }}" \
+            --create-disk=auto-delete=true,size=${{ vars.DISK_SIZE }},type=${{ vars.DISK_TYPE }},image=${IMAGE_ID},boot=${{ vars.IS_BOOT }},kms-key="projects/${{ secrets.GCP_PROJECT_ID }}/locations/${{ secrets.GCP_REGION }}/keyRings/webapp-key-ring-${{ vars.RANDOM_SUFFIX }}/cryptoKeys/vm-key" \
+            --network-interface=network="vpc-network-${{ vars.RANDOM_SUFFIX }}",subnet="webapp-subnet-${{ vars.RANDOM_SUFFIX }}",no-address \
             --metadata-from-file=startup-script=./startup-script.sh \
             --service-account=${{ secrets.VM_SERVICE_ACCOUNT }} \
             --scopes=cloud-platform
@@ -87,7 +85,8 @@ jobs:
       - name: Configure Managed Instance Group
         run: |
           gcloud compute instance-groups managed set-instance-template instance-group-manager \
-            --template="instance-template-${{ github.run_id }}-${{ github.run_attempt }}" --region=${{ secrets.GCP_REGION }}
+            --template="projects/${{ secrets.GCP_PROJECT_ID }}/regions/${{ secrets.GCP_REGION }}/instanceTemplates/instance-template-${{ github.run_id }}-${{ github.run_attempt }}" \
+            --region=${{ secrets.GCP_REGION }}
 
       - name: Recreate Instances in Managed Instance Group, and wait for updates to complete
         run: |
@@ -95,8 +94,8 @@ jobs:
           --region=${{ secrets.GCP_REGION }}
           while :; do
             STATUS=$(gcloud compute instance-groups managed describe instance-group-manager \
-              --region=us-east1 --format="get(status.isStable)")
-            echo "Current status isStable: $STATUS"
+              --region=${{ secrets.GCP_REGION }} --format="get(status.versionTarget.isReached)")
+            echo "Current group status: $STATUS"
             if [ "$STATUS" = "True" ]; then
               echo "The Instance Group Manager has completed the refresh process"
               break

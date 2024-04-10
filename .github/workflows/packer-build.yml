@@ -90,8 +90,8 @@ jobs:
 
       - name: Recreate Instances in Managed Instance Group, and wait for updates to complete
         run: |
-          gcloud compute instance-groups managed rolling-action replace instance-group-manager \
-          --region=${{ secrets.GCP_REGION }}
+          gcloud compute instance-groups managed rolling-action start-update instance-group-manager \
+          --region=${{ secrets.GCP_REGION }} --version="template=projects/${{ secrets.GCP_PROJECT_ID }}/regions/${{ secrets.GCP_REGION }}/instanceTemplates/instance-template-${{ github.run_id }}-${{ github.run_attempt }}"
           while :; do
             STATUS=$(gcloud compute instance-groups managed describe instance-group-manager \
               --region=${{ secrets.GCP_REGION }} --format="get(status.versionTarget.isReached)")

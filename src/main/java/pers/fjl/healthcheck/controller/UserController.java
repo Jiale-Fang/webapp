@@ -24,7 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/v1/user")
+    @PostMapping("/v2/user")
     public ResponseEntity<Object> addUser(@Valid @RequestBody UserAddVO userAddVO) {
         UserDTO userDTO = userService.addUser(userAddVO);
         if (!Objects.isNull(userDTO)) {
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     // If current user can successfully pass the spring security authentication, we can get its info from SecurityContextHolder
-    @GetMapping("/v1/user/self")
+    @GetMapping("/v2/user/self")
     public ResponseEntity<Object> getUserInfo(@RequestBody(required = false) String requestBody) {
         // Check if the request body has parameters
         if (StringUtils.hasText(requestBody)) {
@@ -48,7 +48,7 @@ public class UserController {
         return Result.ok(userDTO);
     }
 
-    @PutMapping("/v1/user/self")
+    @PutMapping("/v2/user/self")
     public ResponseEntity<Object> updateUserInfo(@Valid @RequestBody UserUpdateVO userUpdateVO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
